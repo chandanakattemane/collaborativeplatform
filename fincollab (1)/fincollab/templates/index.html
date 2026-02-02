@@ -1,0 +1,633 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* ===== Animated Background Elements ===== */
+    .floating-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .shape {
+        position: absolute;
+        opacity: 0.1;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+        animation: float 20s infinite linear;
+    }
+
+    .shape:nth-child(1) {
+        width: 300px;
+        height: 300px;
+        top: 10%;
+        left: 5%;
+        animation-delay: 0s;
+    }
+
+    .shape:nth-child(2) {
+        width: 200px;
+        height: 200px;
+        top: 60%;
+        right: 10%;
+        animation-delay: -5s;
+        background: linear-gradient(45deg, #ff6b6b, #ffa726, #ffeb3b);
+    }
+
+    .shape:nth-child(3) {
+        width: 150px;
+        height: 150px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: -10s;
+        background: linear-gradient(45deg, #4ecdc4, #44a08d, #093637);
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-40px) rotate(90deg);
+        }
+        50% {
+            transform: translateY(0px) rotate(180deg);
+        }
+        75% {
+            transform: translateY(40px) rotate(270deg);
+        }
+    }
+
+    /* ===== Artistic Hero Section ===== */
+    .hero-artistic {
+        background: linear-gradient(135deg, 
+            rgba(102, 126, 234, 0.9) 0%, 
+            rgba(118, 75, 162, 0.8) 50%, 
+            rgba(240, 147, 251, 0.7) 100%),
+            url('https://images.unsplash.com/photo-1550684376-efcbd6e3f031?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        border-radius: 24px;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        box-shadow: 
+            0 20px 40px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.1);
+        position: relative;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-content-artistic {
+        padding: 5rem 3rem;
+        text-align: center;
+        color: white;
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 200%;
+        animation: shimmer 3s ease infinite;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    @keyframes shimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* ===== Creative Post Cards ===== */
+    .creative-post {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        margin-bottom: 2rem;
+        box-shadow: 
+            0 8px 32px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+    }
+
+    .creative-post::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.6s;
+    }
+
+    .creative-post:hover::before {
+        left: 100%;
+    }
+
+    .creative-post:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 20px 40px rgba(0,0,0,0.15),
+            0 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .post-header-creative {
+        padding: 1.5rem 2rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.05));
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .user-avatar-creative {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .user-avatar-creative:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .user-info-creative h6 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .post-image-creative {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        cursor: pointer;
+    }
+
+    .creative-post:hover .post-image-creative {
+        transform: scale(1.05);
+    }
+
+    /* ===== Artistic Action Buttons ===== */
+    .post-actions-creative {
+        padding: 1rem 2rem;
+        display: flex;
+        gap: 10px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .action-btn-creative {
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid transparent;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-btn-creative::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+        transition: left 0.5s;
+    }
+
+    .action-btn-creative:hover::before {
+        left: 100%;
+    }
+
+    .action-btn-creative.like:hover {
+        background: rgba(255, 107, 107, 0.1);
+        border-color: #ff6b6b;
+        color: #ff6b6b;
+        transform: translateY(-2px);
+    }
+
+    .action-btn-creative.comment:hover {
+        background: rgba(77, 171, 247, 0.1);
+        border-color: #4dabf7;
+        color: #4dabf7;
+        transform: translateY(-2px);
+    }
+
+    .action-btn-creative.share:hover {
+        background: rgba(82, 196, 26, 0.1);
+        border-color: #52c41a;
+        color: #52c41a;
+        transform: translateY(-2px);
+    }
+
+    /* ===== Gradient Tags ===== */
+    .post-tags {
+        padding: 1rem 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tag {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .tag:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    /* ===== Artistic Sidebar ===== */
+    .sidebar-creative {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 
+            0 8px 32px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.3);
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0 15px 35px rgba(0,0,0,0.15),
+            0 0 0 1px rgba(255,255,255,0.3);
+    }
+
+    .feature-icon-creative {
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon-creative {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    /* ===== Animated CTA ===== */
+    .cta-artistic {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        box-shadow: 
+            0 10px 40px rgba(0,0,0,0.1),
+            inset 0 1px 0 rgba(255,255,255,0.6);
+        border: 1px solid rgba(255,255,255,0.4);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-artistic::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(from 0deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+        animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .btn-artistic {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        color: white;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-artistic:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    /* Dark mode adjustments */
+    .dark-mode .creative-post,
+    .dark-mode .feature-card,
+    .dark-mode .cta-artistic {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+    }
+
+    .dark-mode .action-btn-creative {
+        background: rgba(74, 85, 104, 0.8);
+        color: #e2e8f0;
+    }
+</style>
+
+<!-- Animated Background Shapes -->
+<div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+
+<div class="container-fluid py-4">
+    <!-- Artistic Hero Section -->
+    <div class="hero-artistic">
+        <div class="hero-content-artistic">
+            <h1 class="hero-title">KalaKriti</h1>
+            <p class="lead mb-4 fs-4" style="text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+                Where <span style="background: linear-gradient(45deg, #ff6b6b, #ffa726); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">Creativity</span> 
+                Meets <span style="background: linear-gradient(45deg, #4ecdc4, #44a08d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">Collaboration</span>
+            </p>
+            {% if not current_user.is_authenticated %}
+            <div class="mt-4">
+                <button class="btn-artistic btn-lg me-3" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    🎨 Start Creating
+                </button>
+                <button class="btn btn-outline-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    ✨ Sign In
+                </button>
+            </div>
+            {% else %}
+            <div class="mt-4">
+                <a href="{{ url_for('feed') }}" class="btn-artistic btn-lg me-3">
+                    🌟 Explore Feed
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg px-4">
+                    🎭 My Studio
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Feed Column -->
+        <div class="col-lg-8">
+            <!-- Creative Post 1 -->
+            <div class="creative-post">
+                <div class="post-header-creative">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                         alt="Sarah Chen" class="user-avatar-creative">
+                    <div class="user-info-creative">
+                        <h6>Sarah Chen</h6>
+                        <small>Digital Artist • Just now</small>
+                    </div>
+                </div>
+                
+                <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                     alt="Digital Artwork" class="post-image-creative">
+                
+                <div class="post-actions-creative">
+                    <button class="action-btn-creative like">
+                        ❤️ 128
+                    </button>
+                    <button class="action-btn-creative comment">
+                        💬 24
+                    </button>
+                    <button class="action-btn-creative share">
+                        🔗 Share
+                    </button>
+                </div>
+                
+                <div class="post-caption p-3">
+                    <span class="username" style="font-weight: 700; color: #667eea;">sarahchen</span>
+                    Just finished this digital painting inspired by Japanese folklore. The colors represent the four seasons! 🎨✨
+                    <br>
+                    <span class="text-muted">Looking for a traditional calligrapher to collaborate on adding poetic text!</span>
+                </div>
+                
+                <div class="post-tags">
+                    <span class="tag">#DigitalArt</span>
+                    <span class="tag">#JapaneseFolklore</span>
+                    <span class="tag">#CollaborationWanted</span>
+                    <span class="tag">#Calligraphy</span>
+                </div>
+            </div>
+
+            <!-- Creative Post 2 -->
+            <div class="creative-post">
+                <div class="post-header-creative">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                         alt="Marcus Rodriguez" class="user-avatar-creative">
+                    <div class="user-info-creative">
+                        <h6>Marcus Rodriguez</h6>
+                        <small>Street Photographer • 2 hours ago</small>
+                    </div>
+                </div>
+                
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                     alt="Urban Photography" class="post-image-creative">
+                
+                <div class="post-actions-creative">
+                    <button class="action-btn-creative like">
+                        ❤️ 89
+                    </button>
+                    <button class="action-btn-creative comment">
+                        💬 15
+                    </button>
+                    <button class="action-btn-creative share">
+                        🔗 Share
+                    </button>
+                </div>
+                
+                <div class="post-caption p-3">
+                    <span class="username" style="font-weight: 700; color: #667eea;">marcus_shots</span>
+                    Urban exploration series continues. Captured this amazing light play in an abandoned factory. 📸🏙️
+                    <br>
+                    <span class="text-muted">Need a graffiti artist to collaborate on transforming these spaces! DM if interested.</span>
+                </div>
+                
+                <div class="post-tags">
+                    <span class="tag">#UrbanPhotography</span>
+                    <span class="tag">#StreetArt</span>
+                    <span class="tag">#Collaboration</span>
+                    <span class="tag">#Graffiti</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artistic Sidebar -->
+        <div class="col-lg-4">
+            <div class="sidebar-creative">
+                <!-- Features Grid -->
+                <div class="feature-card">
+                    <h5 class="text-center mb-4" style="background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">
+                        🎨 Creative Tools
+                    </h5>
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="feature-icon-creative text-white">
+                                    👥
+                                </div>
+                                <h6>Smart Match</h6>
+                                <small class="text-muted">Find collaborators</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="feature-icon-creative text-white">
+                                    🎭
+                                </div>
+                                <h6>Portfolio</h6>
+                                <small class="text-muted">Showcase work</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="feature-icon-creative text-white">
+                                    💬
+                                </div>
+                                <h6>Live Chat</h6>
+                                <small class="text-muted">Real-time collaboration</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <div class="feature-icon-creative text-white">
+                                    📊
+                                </div>
+                                <h6>Projects</h6>
+                                <small class="text-muted">Manage work</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Artistic CTA -->
+                {% if not current_user.is_authenticated %}
+                <div class="cta-artistic">
+                    <div style="position: relative; z-index: 2;">
+                        <h5 class="mb-3">Ready to Create Magic?</h5>
+                        <p class="text-muted mb-3">Join our community of passionate artists</p>
+                        <button class="btn-artistic w-100 mb-2" data-bs-toggle="modal" data-bs-target="#registerModal">
+                            🚀 Start Your Journey
+                        </button>
+                        <small class="text-muted">Unleash your creativity today</small>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Enhanced interactive effects
+    document.querySelectorAll('.action-btn-creative').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Ripple effect
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size/2;
+            const y = event.clientY - rect.top - size/2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.6);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                width: ${size}px;
+                height: ${size}px;
+                top: ${y}px;
+                left: ${x}px;
+            `;
+            
+            this.appendChild(ripple);
+            
+            // Remove ripple after animation
+            setTimeout(() => ripple.remove(), 600);
+            
+            // Like count update for demo
+            if (this.classList.contains('like')) {
+                const currentText = this.textContent;
+                const likeCount = parseInt(currentText.match(/\d+/)[0]) + 1;
+                this.textContent = `❤️ ${likeCount}`;
+            }
+        });
+    });
+
+    // Add CSS for ripple animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Parallax effect for background shapes
+    document.addEventListener('mousemove', (e) => {
+        const shapes = document.querySelectorAll('.shape');
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        shapes.forEach((shape, index) => {
+            const speed = (index + 1) * 0.5;
+            const x = (mouseX - 0.5) * speed * 50;
+            const y = (mouseY - 0.5) * speed * 50;
+            shape.style.transform = `translate(${x}px, ${y}px) rotate(${mouseX * 360}deg)`;
+        });
+    });
+</script>
+{% endblock %}

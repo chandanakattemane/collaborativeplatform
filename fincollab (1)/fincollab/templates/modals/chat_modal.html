@@ -1,0 +1,37 @@
+<div class="modal fade" id="chatModal{{ req.id }}" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Chat between {{ req.sender.fullname }} and {{ req.work.user.fullname }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="max-height:400px; overflow-y:auto;">
+        
+        <!-- Chat history -->
+        {% for msg in req.chat_messages %}
+          <div class="mb-2 {% if msg.sender_id == current_user.id %}text-end{% endif %}">
+            <div class="p-2 rounded {% if msg.sender_id == current_user.id %}bg-primary text-white{% else %}bg-light{% endif %}">
+              <strong>{{ msg.sender.username }}</strong><br>
+              {{ msg.text }}
+              <small class="text-muted d-block">{{ msg.timestamp.strftime("%H:%M") }}</small>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-muted">No messages yet. Start the conversation!</p>
+        {% endfor %}
+
+        <!-- Send message -->
+        <form action="{{ url_for('send_collab_message', req_id=req.id) }}" method="post" class="mt-2">
+          <div class="input-group">
+            <input type="text" class="form-control" name="text" placeholder="Type your message..." required>
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+

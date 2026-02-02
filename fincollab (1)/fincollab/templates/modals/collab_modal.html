@@ -1,0 +1,38 @@
+<div class="modal fade" id="collabModal{{ work.id }}" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Collaboration Request for "{{ work.title }}"</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Collab form -->
+        <form action="{{ url_for('send_collab_request', work_id=work.id) }}" method="post">
+          <div class="mb-3">
+            <label class="form-label">Message to Creator</label>
+            <textarea class="form-control" name="message" rows="3" placeholder="Describe your idea for collaboration..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">Send Request</button>
+        </form>
+
+        <!-- Show existing requests -->
+        {% set requests = work.collab_requests %}
+        {% if requests %}
+          <hr>
+          <h6>Previous Requests</h6>
+          <ul class="list-group">
+            {% for req in requests %}
+              <li class="list-group-item">
+                <strong>{{ req.sender.username }}</strong> 
+                <small class="text-muted"> • {{ req.timestamp.strftime("%d %b %Y %H:%M") }}</small>
+                <p class="mb-0">{{ req.message }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

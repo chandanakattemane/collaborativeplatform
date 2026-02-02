@@ -1,0 +1,94 @@
+/* -----------------------------------------
+   ORIGINAL STYLES
+------------------------------------------ */
+body { 
+  background: #f7f9fb; 
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+}
+.navbar-brand { 
+  color: #5b21b6; 
+  font-size: 1.1rem; 
+  letter-spacing: .2px; 
+}
+.brand-dot { margin-right: 6px; }
+
+.hero {
+  background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 50%, #06b6d4 100%);
+  border-radius: .75rem;
+  box-shadow: 0 6px 20px rgba(50, 50, 93, 0.08);
+}
+
+.card { border-radius: .6rem; }
+.card .card-body h5 { margin-bottom: .4rem; }
+
+input[type="file"] { padding: .2rem; }
+
+.alert { max-width: 980px; margin: 16px auto; }
+
+/* small responsiveness */
+@media (max-width: 576px) {
+  .hero { padding: 2rem 1rem; text-align: center; }
+}
+
+/* -----------------------------------------
+   DARK MODE TOGGLE + THEME OVERRIDES
+------------------------------------------ */
+
+/* Floating Dark Mode Button */
+#darkModeToggle {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 9999;
+  background-color: #5b21b6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  transition: all 0.3s ease;
+}
+
+#darkModeToggle:hover {
+  background-color: #4c1d95;
+  transform: scale(1.1);
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #e4e4e4 !important;
+}
+
+body.dark-mode .navbar-brand {
+  color: #c084fc !important;
+}
+
+body.dark-mode .hero {
+  background: linear-gradient(135deg, #3b0764 0%, #5b21b6 50%, #0891b2 100%) !important;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .card {
+  background-color: #1e1e1e !important;
+  color: #f3f3f3 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+body.dark-mode input[type="file"],
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #2b2b2b !important;
+  color: #fff !important;
+  border-color: #555 !important;
+}
+
+body.dark-mode .alert {
+  background-color: #2b2b2b !important;
+  color: #f3f3f3 !important;
+  border: 1px solid #555;
+}

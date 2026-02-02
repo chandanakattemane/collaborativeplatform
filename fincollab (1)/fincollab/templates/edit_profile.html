@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card p-4">
+    <h4>Edit profile</h4>
+    <form action="{{ url_for('edit_profile') }}" method="post" enctype="multipart/form-data">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Full name</label>
+          <input class="form-control" name="fullname" value="{{ user.fullname or '' }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">DOB</label>
+          <input type="date" class="form-control" name="dob" value="{{ user.dob or '' }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Gender</label>
+          <select class="form-select" name="gender">
+            <option value="">Prefer not to say</option>
+            <option {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+            <option {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+            <option {% if user.gender == 'Other' %}selected{% endif %}>Other</option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Address</label>
+          <input class="form-control" name="address" value="{{ user.address or '' }}">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Talent type</label>
+          <input class="form-control" name="talent_type" value="{{ user.talent_type or '' }}">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Password (leave blank to keep current)</label>
+          <input type="password" class="form-control" name="password">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Profile picture</label>
+          <input type="file" class="form-control" name="profile_pic" id="edit_profile_pic">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Bio</label>
+          <textarea class="form-control" rows="4" name="bio">{{ user.bio or '' }}</textarea>
+        </div>
+
+        <div class="col-12 text-end">
+          <a class="btn btn-secondary" href="{{ url_for('profile', username=user.username) }}">Cancel</a>
+          <button class="btn btn-primary" type="submit">Save changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
